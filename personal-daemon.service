@@ -1,0 +1,10 @@
+# To install your service, copy this file to /etc/systemd/system/<this-file-name.service>
+[Unit]
+Description=my personal daemon for various tasks
+
+[Service]
+Type=notify
+ExecStart=/usr/sbin/personal-daemon
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,5 @@
+.old/
+*raindrop*.csv
+bin/
+obj/
+nuget/
