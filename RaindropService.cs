@@ -16,7 +16,15 @@ public class RaindropService : IRaindropService
             FileNamePattern = "raindrop"
         };
 
-        var files = youtube_grepper.GetMatchingFiles().ToList();
+
+        var grep_task = Task.Run(
+            () =>
+            {
+                var results = youtube_grepper.GetMatchingFiles().ToList();
+                return results;
+            });
+
+        var files = await grep_task;
         return files;
     }
 

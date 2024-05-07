@@ -1,3 +1,16 @@
+#!/bin/bash
+
+# src: https://swimburger.net/blog/dotnet/how-to-run-a-dotnet-core-console-app-as-a-service-using-systemd-on-linux
+
+#mkdir ~/personal-daemon
+cd ~/personal-daemon
+#dotnet new console
+
+sudo mkdir /srv/
+sudo mkdir /srv/personal-daemon               # Create directory /srv/personal-daemon
+sudo chown nick /srv/personal-daemon  # Assign ownership to yourself of the directory
+
+cat > personal-daemon.service << EOL
 [Unit]
 Description=Personal Daemon console application
 
@@ -26,3 +39,13 @@ Environment=DOTNET_ROOT=/usr/lib64/dotnet
 
 [Install]
 WantedBy=multi-user.target
+EOL
+
+ls *.service
+
+sudo cp personal-daemon.service /etc/systemd/system/personal-daemon.service
+sudo systemctl daemon-reload
+sudo systemctl start personal-daemon
+sudo journalctl -u personal-daemon
+
+
