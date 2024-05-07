@@ -1,6 +1,8 @@
 using System.Runtime.Caching;
 using CodeMechanic.Diagnostics;
+using CodeMechanic.FileSystem;
 using CodeMechanic.Shargs;
+using CodeMechanic.Types;
 using CodeMechanic.Youtube;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Hosting.Systemd;
@@ -54,15 +56,37 @@ public class DaemonService : IHostedLifecycleService, IDisposable
         generate_json = options.MatchingFlag("--generate-json");
     }
 
-    public Task StartAsync(CancellationToken cancellationToken)
+    public async Task StartAsync(CancellationToken cancellationToken)
     {
-        logger.LogInformation("Starting daemon: " + config.Value.DaemonName);
+        string message = "Starting my super special awesum daemon: " + config.Value.DaemonName;
+        logger.LogInformation(message);
+
+        WriteLocalLogfile(message.AsArray());
+
+        // while (true)
+        // {
+        //     Console.WriteLine("Hello From personal-daemon!");
+        //     await Task.Delay(500);
+        // }
 
 
         // if (generate_json) FasterJsonParsingUsingCodeGenerators();
 
 
-        return Task.CompletedTask;
+        // return Task.CompletedTask;
+    }
+
+    private static void WriteLocalLogfile(params string[] lines)
+    {
+        string cwd = Directory.GetCurrentDirectory();
+        string filename = "personal-daemon.log";
+        string savepath = Path.Combine(cwd, filename);
+        File.WriteAllLines(savepath, lines);
+        // var fileinfo = FS.SaveAs(new SaveAs("personal-daemon.log")
+        // {
+        //     create_nonexistent_directory = true, debug = true, save_folder = cwd
+        // }, lines.Dump(nameof(lines)));
+        // fileinfo.Dump(nameof(fileinfo));
     }
 
     public Task StopAsync(CancellationToken cancellationToken)
@@ -75,7 +99,7 @@ public class DaemonService : IHostedLifecycleService, IDisposable
     {
         logger.LogInformation("Disposing....");
     }
-    
+
     // protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     // {
     //     logger.LogCritical("Critical log on startup.");
