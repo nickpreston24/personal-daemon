@@ -1,11 +1,4 @@
-﻿// See https://aka.ms/new-console-template for more information
-
-using System.Text.Json;
-using CodeMechanic.Diagnostics;
-using CodeMechanic.Shargs;
-using System.Threading.Tasks;
-using CodeMechanic.Youtube;
-using Microsoft.Extensions.Configuration;
+﻿using CodeMechanic.Youtube;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -16,9 +9,6 @@ public class Program
 {
     public static async Task Main(string[] args)
     {
-        // Console.WriteLine("Running personal daemon ... ");
-
-
         await RunAsDaemon(args);
     }
 
@@ -26,17 +16,6 @@ public class Program
     {
         var builder =
             Host.CreateDefaultBuilder(args)
-                // new HostBuilder()
-                // new HostBuilder()
-                // .ConfigureAppConfiguration((hostingContext, config) =>
-                // {
-                //     config.AddEnvironmentVariables();
-                //
-                //     if (args != null)
-                //     {
-                //         config.AddCommandLine(args);
-                //     }
-                // })
                 .UseSystemd() // src:  https://devblogs.microsoft.com/dotnet/net-core-and-systemd/?WT.mc_id=ondotnet-c9-cephilli
                 .ConfigureServices((hostContext, services) =>
                 {
