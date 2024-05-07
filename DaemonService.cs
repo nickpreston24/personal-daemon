@@ -3,6 +3,7 @@ using CodeMechanic.Diagnostics;
 using CodeMechanic.Shargs;
 using CodeMechanic.Youtube;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Hosting.Systemd;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
@@ -12,7 +13,7 @@ namespace personal_daemon;
 /// <summary>
 /// Adapted from: https://www.atmosera.com/blog/creating-a-daemon-with-net-core-part-1/
 /// </summary>
-public class DaemonService : IHostedService, IDisposable
+public class DaemonService : IHostedLifecycleService, IDisposable
 {
     private readonly ILogger logger;
     private readonly IOptions<DaemonConfig> config;
@@ -29,9 +30,14 @@ public class DaemonService : IHostedService, IDisposable
         , IYoutubeService youtubeService
         , IRaindropService raindrop
         , ICachedArgsService cachedArgsService
+        , IHostLifetime lifetime
     )
     {
         this.logger = logger;
+        logger.LogInformation("IsSystemd: {isSystemd}", lifetime.GetType() == typeof(SystemdLifetime));
+        logger.LogInformation("IHostLifetime: {hostLifetime}", lifetime.GetType());
+
+
         this.config = config;
         this.youtube_service = youtubeService;
         this.raindrop_service = raindrop;
@@ -40,7 +46,7 @@ public class DaemonService : IHostedService, IDisposable
 
         args = cachedArgsService.GetCachedArgs();
         args.Dump("args from cache");
-        
+
         var options = new ArgumentsCollection(args);
 
         options.Dump("options");
@@ -51,13 +57,11 @@ public class DaemonService : IHostedService, IDisposable
     public Task StartAsync(CancellationToken cancellationToken)
     {
         logger.LogInformation("Starting daemon: " + config.Value.DaemonName);
-        
-        
-        
-        
+
+
         // if (generate_json) FasterJsonParsingUsingCodeGenerators();
 
-        
+
         return Task.CompletedTask;
     }
 
@@ -72,21 +76,37 @@ public class DaemonService : IHostedService, IDisposable
         logger.LogInformation("Disposing....");
     }
     
-    /// <summary>
-    /// src: https://www.youtube.com/watch?v=HhyBaJ7uisU
-    /// </summary>
-    // private static void FasterJsonParsingUsingCodeGenerators()
+    // protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     // {
-    //     var person = new Person()
+    //     logger.LogCritical("Critical log on startup.");
+    //     while (!stoppingToken.IsCancellationRequested)
     //     {
-    //         Name = "Nick Preston",
-    //         Age = 34
-    //     };
-    //
-    //     var context = PersonJsonContext.Default.Person;
-    //     string text = JsonSerializer.Serialize(person, context);
-    //     Console.WriteLine(text);
-    //     Person obj = JsonSerializer.Deserialize(text, context);
-    //     obj.Dump("person json");
+    //         logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
+    //         await Task.Delay(1000, stoppingToken);
+    //     }
     // }
+
+    public Task StartingAsync(CancellationToken cancellationToken)
+    {
+        logger.LogInformation("Starting daemon...");
+        return Task.CompletedTask;
+    }
+
+    public Task StartedAsync(CancellationToken cancellationToken)
+    {
+        logger.LogInformation("Started daemon.");
+        return Task.CompletedTask;
+    }
+
+    public Task StoppingAsync(CancellationToken cancellationToken)
+    {
+        logger.LogInformation("Stopping daemon...");
+        return Task.CompletedTask;
+    }
+
+    public Task StoppedAsync(CancellationToken cancellationToken)
+    {
+        logger.LogInformation("Stopped daemon.");
+        return Task.CompletedTask;
+    }
 }

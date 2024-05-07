@@ -1,3 +1,5 @@
+#!/bin/bash
+
 echo "fetching current status:"
 sudo systemctl status personal-daemon
 echo "fetching journal:"
