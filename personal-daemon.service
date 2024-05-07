@@ -8,3 +8,4 @@ ExecStart=/usr/sbin/personal-daemon
 
 [Install]
 WantedBy=multi-user.target
+
