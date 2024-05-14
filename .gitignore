@@ -1,3 +1,4 @@
+*.rest
 **/*.log
 .env
 .old/
