@@ -1,6 +1,3 @@
-using CodeMechanic.Diagnostics;
-using Newtonsoft.Json;
-
 namespace personal_daemon;
 
 public class JsonGeneratorExampleService : IJsonGeneratorExampleService

@@ -1,4 +1,5 @@
-using System.Runtime.Caching;
+using System.Diagnostics;
+using System.Text;
 using CodeMechanic.Diagnostics;
 using CodeMechanic.FileSystem;
 using CodeMechanic.Shargs;
@@ -8,14 +9,13 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Hosting.Systemd;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 
 namespace personal_daemon;
 
 /// <summary>
 /// Adapted from: https://www.atmosera.com/blog/creating-a-daemon-with-net-core-part-1/
 /// </summary>
-public class DaemonService : IHostedLifecycleService, IDisposable
+public class DaemonWorker : IHostedLifecycleService, IDisposable
 {
     private readonly ILogger logger;
     private readonly IOptions<DaemonConfig> config;
@@ -23,11 +23,13 @@ public class DaemonService : IHostedLifecycleService, IDisposable
     private readonly IRaindropService raindrop_service;
     private readonly ICachedArgsService cachedArgsService;
     private readonly bool generate_json;
+    private string current_log_file_save_path;
+    private int delay_seconds = 5;
 
     private string[] args { get; set; }
 
-    public DaemonService(
-        ILogger<DaemonService> logger
+    public DaemonWorker(
+        ILogger<DaemonWorker> logger
         , IOptions<DaemonConfig> config
         , IYoutubeService youtubeService
         , IRaindropService raindrop
@@ -61,12 +63,61 @@ public class DaemonService : IHostedLifecycleService, IDisposable
         string message = "Starting my super special awesum daemon: " + config.Value.DaemonName;
         logger.LogInformation(message);
 
-        WriteLocalLogfile(message.AsArray());
+        // WriteLocalLogfile(message.AsArray());
+
+        var sw = Stopwatch.StartNew();
+        string cwd = Directory.GetCurrentDirectory();
+        Console.WriteLine("Current dir :>> " + cwd);
+        // string base_directory = cwd.GoUp(2);
+
+        string base_directory = "/home/nick/Desktop/projects/";
+        // string path_root = Path.GetPathRoot(base_directory);
+        // string full_path = Path.GetFullPath(base_directory);
+        // Console.WriteLine("path_root:>>" + path_root);
+        // Console.WriteLine("full_path:>>" + full_path);
+
+        Console.WriteLine("base directory:>>" + base_directory);
+        var grep_results_map = await youtube_service.FindAllYoutubeLinks(base_directory,
+            debug_mode: false
+            // , "Services"
+            , "Pages"
+            // , "www*"
+        );
+
+        sw.Stop();
+        Console.WriteLine(sw.Elapsed);
+
+        var links = grep_results_map
+                .SelectMany(kvp => kvp.Value
+                    .Select(grepResult => grepResult.Line))
+                // .Dump("grep results")
+                .ToList()
+            ;
+        Console.WriteLine("total youtube links found :>> " + links.Count);
+
+
+        var total_ms = sw.ElapsedMilliseconds;
+        double ms_per_link = links.Count == 0 ? -1 : total_ms / links.Count;
+        Console.WriteLine("ms per link: " + ms_per_link);
+        Console.WriteLine("total ms: >> " + total_ms);
+
+
+        string log_message = new StringBuilder()
+            .AppendLine("ms_per_link:" + ms_per_link)
+            .ToString();
+
+        // WriteLocalLogfile(log_message);
+
+        var collection = youtube_service.ExtractAllYoutubeLinks(links.ToArray());
+        await foreach (var link_set in collection)
+        {
+            // link_set.Dump();
+        }
 
         // while (true)
         // {
         //     Console.WriteLine("Hello From personal-daemon!");
-        //     await Task.Delay(500);
+        //     await Task.Delay(1000 * delay_seconds);
         // }
 
 
@@ -76,17 +127,22 @@ public class DaemonService : IHostedLifecycleService, IDisposable
         // return Task.CompletedTask;
     }
 
-    private static void WriteLocalLogfile(params string[] lines)
+    private void WriteLocalLogfile(params string[] lines)
     {
-        string cwd = Directory.GetCurrentDirectory();
-        string filename = "personal-daemon.log";
-        string savepath = Path.Combine(cwd, filename);
-        File.WriteAllLines(savepath, lines);
-        // var fileinfo = FS.SaveAs(new SaveAs("personal-daemon.log")
-        // {
-        //     create_nonexistent_directory = true, debug = true, save_folder = cwd
-        // }, lines.Dump(nameof(lines)));
-        // fileinfo.Dump(nameof(fileinfo));
+        if (current_log_file_save_path.IsEmpty())
+        {
+            var now = DateTime.UtcNow.ToFileTime();
+            string cwd = Directory.GetCurrentDirectory();
+            string filename = $"personal-daemon_{now}.log";
+            string folder_path = Path.Combine(cwd, "logs");
+            if (!Directory.Exists(folder_path))
+                Directory.CreateDirectory(folder_path);
+            string savepath = Path.Combine(cwd, "logs", filename);
+
+            current_log_file_save_path = savepath;
+        }
+
+        FS.SaveAs(new SaveAs(current_log_file_save_path), lines);
     }
 
     public Task StopAsync(CancellationToken cancellationToken)

@@ -17,13 +17,20 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <Watch Include="**\*.config.json" />
+        <Watch Include="**\*.sql" Watch="true" />
+        <Watch Include="/Services/**\*.cs" Watch="true" />
+    </ItemGroup>
+    
+    <ItemGroup>
         <PackageReference Include="CodeMechanic.Diagnostics" Version="1.0.3" />
         <PackageReference Include="CodeMechanic.Embeds" Version="1.0.0" />
-        <PackageReference Include="CodeMechanic.FileSystem" Version="1.0.7" />
+        <PackageReference Include="CodeMechanic.FileSystem" Version="1.0.8" />
         <PackageReference Include="CodeMechanic.Reflection" Version="1.0.4" />
         <PackageReference Include="CodeMechanic.Regex" Version="1.0.2" />
         <PackageReference Include="CodeMechanic.Shargs" Version="1.0.1" />
         <PackageReference Include="CodeMechanic.Types" Version="1.0.9" />
+        <PackageReference Include="coravel" Version="5.0.3" />
         <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
         <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="8.0.0" />
         <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="8.0.0" />
@@ -37,15 +44,9 @@
         <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0" />
         <PackageReference Include="System.Runtime.Caching" Version="8.0.0" />
     </ItemGroup>
-
+    
     <ItemGroup>
-      <ProjectReference Include="..\evantage\evantage.csproj" />
+      <ProjectReference Include="..\code-mechanic\CodeMechanic.Todoist\Todoist.csproj" />
     </ItemGroup>
-    <!--    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">-->
-    <!--        <LangVersion>latest</LangVersion>-->
-    <!--    </PropertyGroup>-->
-
-    <!--    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">-->
-    <!--        <LangVersion>latest</LangVersion>-->
-    <!--    </PropertyGroup>-->
+   
 </Project>
