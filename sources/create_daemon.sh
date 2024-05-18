@@ -1,6 +1,6 @@
 # Create application
-mkdir personal-daemon
-cd personal-daemon
+mkdir personal_daemon
+cd personal_daemon
 dotnet new console
 
 # Change Program.cs
@@ -9,7 +9,7 @@ using System;
 using System.Threading;
 
 
-namespace personal-daemon
+namespace personal_daemon
 {
   class Program
   {
@@ -35,4 +35,4 @@ dotnet restore
 dotnet publish --configuration Release --output bin
 
 # Run local to verify all is good
-dotnet ./bin/personal-daemon.dll
+dotnet ./bin/personal_daemon.dll
