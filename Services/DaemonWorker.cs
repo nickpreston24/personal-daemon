@@ -141,8 +141,8 @@ public class DaemonWorker : IHostedLifecycleService, IDisposable
 
             current_log_file_save_path = savepath;
         }
-
-        FS.SaveAs(new SaveAs(current_log_file_save_path), lines);
+        // todo: use codemechanic's version fo this ..
+        // FS.SaveAs(new SaveAs(current_log_file_save_path), lines);
     }
 
     public Task StopAsync(CancellationToken cancellationToken)

@@ -1,12 +1,18 @@
 using System.Collections.Concurrent;
 using System.Text.RegularExpressions;
 using CodeMechanic.Advanced.Regex;
+using CodeMechanic.Diagnostics;
 using CodeMechanic.FileSystem;
 
 namespace CodeMechanic.Youtube;
 
 public class YoutubeService : IYoutubeService
 {
+    public YoutubeService()
+    {
+        Console.WriteLine(nameof(YoutubeService));
+    }
+
     public async Task<Dictionary<string, List<Grepper.GrepResult>>> FindAllYoutubeLinks(
         string base_directory,
         bool debug_mode = false,
@@ -20,7 +26,9 @@ public class YoutubeService : IYoutubeService
 
         foreach (var pattern in subfolder_patterns)
         {
-            await foreach (var dir in base_directory_di.DiscoverDirectories(new Regex(pattern)))
+            var rgx = new Regex(pattern);
+            await foreach (var dir in base_directory_di
+                               .DiscoverDirectories(rgx))
             {
                 if (debug_mode)
                     Console.WriteLine("regex root dir:>>" + dir);
@@ -38,9 +46,10 @@ public class YoutubeService : IYoutubeService
             }
         }
 
-        grepResults.Select(r => r.Key)
-            // .Dump("all subfolders found by regex")
-            ;
+        if (debug_mode)
+            grepResults
+                .Select(r => r.Key)
+                .Dump("all subfolders found by regex");
 
         return grepResults.ToDictionary();
     }

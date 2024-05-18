@@ -6,15 +6,12 @@
         <RootNamespace>personal_daemon</RootNamespace>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <LangVersion>preview</LangVersion>
     </PropertyGroup>
 
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-        <LangVersion>latest</LangVersion>
-    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'" />
 
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-        <LangVersion>latest</LangVersion>
-    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'" />
 
     <ItemGroup>
         <Watch Include="**\*.config.json" />
@@ -25,12 +22,15 @@
     <ItemGroup>
         <PackageReference Include="CodeMechanic.Diagnostics" Version="1.0.3" />
         <PackageReference Include="CodeMechanic.Embeds" Version="1.0.0" />
-        <PackageReference Include="CodeMechanic.FileSystem" Version="1.0.8" />
+        <PackageReference Include="CodeMechanic.FileSystem" Version="1.0.11" />
         <PackageReference Include="CodeMechanic.Reflection" Version="1.0.4" />
         <PackageReference Include="CodeMechanic.Regex" Version="1.0.2" />
         <PackageReference Include="CodeMechanic.Shargs" Version="1.0.1" />
         <PackageReference Include="CodeMechanic.Types" Version="1.0.9" />
         <PackageReference Include="coravel" Version="5.0.3" />
+        <PackageReference Include="Dapper" Version="2.1.35" />
+        <PackageReference Include="Insight.Database" Version="8.0.0" />
+        <PackageReference Include="Insight.Database.Providers.MySql" Version="8.0.0" />
         <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
         <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="8.0.0" />
         <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="8.0.0" />
@@ -46,7 +46,9 @@
     </ItemGroup>
     
     <ItemGroup>
-      <ProjectReference Include="..\code-mechanic\CodeMechanic.Todoist\Todoist.csproj" />
+      <ProjectReference Include="..\code-mechanic\CodeMechanic.Scriptures\scriptures.csproj" />
+      <ProjectReference Include="..\code-mechanic\CodeMechanic.Todoist\CodeMechanic.Todoist.csproj" />
+      <ProjectReference Include="..\evantage\evantage.csproj" />
     </ItemGroup>
    
 </Project>

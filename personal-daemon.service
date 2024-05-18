@@ -4,7 +4,7 @@ Description=Personal Daemon console application
 [Service]
 # systemd will run this executable to start the service
 # if /usr/bin/dotnet doesn't work, use "which dotnet" to find correct dotnet executable path
-ExecStart=/usr/bin/dotnet /srv/personal-daemon/personal-daemon.dll
+ExecStart=/usr/bin/dotnet /home/nick/personal-daemon/srv/personal-daemon/personal-daemon.dll
 # to query logs using journalctl, set a logical name here
 SyslogIdentifier=personal-daemon
 

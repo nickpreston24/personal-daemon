@@ -4,7 +4,7 @@ namespace CodeMechanic.Youtube;
 
 public class RaindropService : IRaindropService
 {
-    public async Task<List<Grepper.GrepResult>> ReadCSVFiles(string directory)
+    public async Task<List<Grepper.GrepResult>> ReadRaindropCSVs(string directory)
     {
         string cwd = Directory.GetCurrentDirectory();
         string rootdir = Path.GetRelativePath(cwd, directory);
@@ -30,7 +30,7 @@ public class RaindropService : IRaindropService
 
     public async Task<List<RaindropBookmark>> ImportBookmarksFromCSV(string csv_dir)
     {
-        var grep_results = await ReadCSVFiles(csv_dir);
+        var grep_results = await ReadRaindropCSVs(csv_dir);
 
         //todo: finish
         var bookmarks = new List<RaindropBookmark>();

@@ -2,9 +2,9 @@
 
 # src: https://swimburger.net/blog/dotnet/how-to-run-a-dotnet-core-console-app-as-a-service-using-systemd-on-linux
 
-#mkdir ~/personal-daemon
+mkdir ~/personal-daemon
 cd ~/personal-daemon
-#dotnet new console
+dotnet new worker --name personal-daemon
 
 sudo mkdir /srv/
 sudo mkdir /srv/personal-daemon               # Create directory /srv/personal-daemon

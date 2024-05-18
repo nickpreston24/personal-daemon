@@ -1,5 +1,5 @@
 #!/bin/bash
-bash create-personal-daemon-daemon.sh
+bash create-personal-daemon.sh
 
 #rm Program.cs
 

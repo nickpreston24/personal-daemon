@@ -1,10 +1,12 @@
 using System.Text.RegularExpressions;
 using CodeMechanic.Types;
 
-namespace CodeMechanic.FileSystem;
+namespace personal_daemon;
 
+// NOTE: these functions are obsolete: I've already made a codemechanic lib out of them.
 public static class DirectoryExtensions
 {
+    [Obsolete("Old. Do not use!")]
     public static DirectoryInfo GoUpToDirectory(this DirectoryInfo di, string parent_name = "", bool debug = false)
     {
         // allow current directory match
@@ -24,6 +26,7 @@ public static class DirectoryExtensions
             : GoUpToDirectory(di.Parent, parent_name) ?? throw new DirectoryNotFoundException(parent_name);
     }
 
+    [Obsolete("Old. Do not use!")]
     public static async IAsyncEnumerable<string> DiscoverDirectories(
         this DirectoryInfo di
         , Regex directory_pattern
