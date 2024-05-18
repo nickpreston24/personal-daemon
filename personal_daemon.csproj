@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -10,15 +10,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CodeMechanic.Diagnostics" Version="Unknown" />
-    <PackageReference Include="CodeMechanic.FileSystem" Version="Unknown" />
-    <PackageReference Include="CodeMechanic.Scriptures" Version="Unknown" />
-    <PackageReference Include="CodeMechanic.Systemd.Daemons" Version="Unknown" />
-    <PackageReference Include="CodeMechanic.Todoist" Version="Unknown" />
-    <PackageReference Include="CodeMechanic.Types" Version="Unknown" />
-    <PackageReference Include="Coravel" Version="Unknown" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="Unknown" />
-    <PackageReference Include="Microsoft.Extensions.Hosting.Systemd" Version="Unknown" />
+    <PackageReference Include="CodeMechanic.Diagnostics" Version="1.0.3" />
+    <PackageReference Include="CodeMechanic.FileSystem" Version="1.1.0" />
+    <PackageReference Include="CodeMechanic.Scriptures" Version="1.0.0" />
+    <PackageReference Include="CodeMechanic.Systemd.Daemons" Version="1.0.0" />
+    <PackageReference Include="CodeMechanic.Todoist" Version="1.0.2" />
+    <PackageReference Include="CodeMechanic.Types" Version="1.0.9" />
+    <PackageReference Include="Coravel" Version="5.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Systemd" Version="8.0.0" />
   </ItemGroup>
 
 </Project>
