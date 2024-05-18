@@ -6,21 +6,19 @@
     <RootNamespace>personal_daemon</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <Langversion>preview</Langversion>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="CodeMechanic.Diagnostics" Version="1.0.3" />
     <PackageReference Include="CodeMechanic.FileSystem" Version="1.1.0" />
+    <PackageReference Include="CodeMechanic.Scriptures" Version="1.0.0" />
     <PackageReference Include="CodeMechanic.Systemd.Daemons" Version="1.0.0" />
     <PackageReference Include="CodeMechanic.Todoist" Version="1.0.2" />
     <PackageReference Include="CodeMechanic.Types" Version="1.0.9" />
     <PackageReference Include="Coravel" Version="5.0.3" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting.Systemd" Version="8.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\code-mechanic\CodeMechanic.Scriptures\scriptures.csproj" />
   </ItemGroup>
 
 </Project>

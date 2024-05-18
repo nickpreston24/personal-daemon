@@ -1,5 +1,7 @@
 using CodeMechanic.Systemd.Daemons;
 using CodeMechanic.Types;
+using CodeMechanic.FileSystem;
+using CodeMechanic.Diagnostics;
 using Coravel;
 using Coravel.Invocable;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,9 +13,9 @@ public class MyFirstInvocable : IInvocable
 {
     public async Task Invoke()
     {
-        Console.WriteLine("Hello from personal_daemon! (updated at 6am)");
+        Console.WriteLine("Hello from personal_daemon! (updated at 7am)");
         /// Sample MySQL logging (requires MYSQL_* .env variables to be set in your new .env).
-        if (Environment.GetEnvironmentVariable("MYSQLPASSWORD").NotEmpty())
+        if (Environment.GetEnvironmentVariable("MYSQLPASSWORD").Dump("here's the f*cking password").NotEmpty())
         {
             int rows = await MySQLExceptionLogger.LogInfo($"Invoking from /srv/{nameof(personal_daemon)}!",
                 nameof(personal_daemon));
@@ -26,6 +28,7 @@ public class Program
 {
     public static async Task Main(string[] args)
     {
+        DotEnv.Load();
         IHost host = CreateHostBuilder(args)
             .UseSystemd()
             .Build();
