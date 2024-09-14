@@ -1,5 +1,5 @@
 using System.Diagnostics;
-using CodeMechanic.Advanced.Regex;
+using CodeMechanic.RegularExpressions;
 using CodeMechanic.Diagnostics;
 using CodeMechanic.Scriptures;
 using CodeMechanic.Types;

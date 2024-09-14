@@ -1,6 +1,6 @@
 using MySql.Data.MySqlClient;
 
-namespace personal_daemon;
+namespace worker1;
 
 public static class TemporaryExceptionLogger
 {
@@ -30,9 +30,9 @@ public static class TemporaryExceptionLogger
                         exception_text = exception.ToString(),
                         exception_message = exception.Message
                     });
-            int affected = results.ToList().Count;
-
-            Console.WriteLine($"logged {affected} log records.");
+            // int affected = results.ToList().Count;
+            //
+            // Console.WriteLine($"logged {affected} log records.");
         }
         catch (Exception e)
         {

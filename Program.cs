@@ -13,7 +13,7 @@ public class MyFirstInvocable : IInvocable
 {
     public async Task Invoke()
     {
-        Console.WriteLine("Hello from personal_daemon! (updated at 7am)");
+        Console.WriteLine($"Hello from personal_daemon! (updated at {DateTime.Now.Hour})");
         /// Sample MySQL logging (requires MYSQL_* .env variables to be set in your new .env).
         if (Environment.GetEnvironmentVariable("MYSQLPASSWORD").Dump("here's the f*cking password").NotEmpty())
         {
